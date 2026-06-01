@@ -234,6 +234,48 @@ String xmlNotaProcessadaPeloSefaz = notaProcessada.toString();
 | Consulta cadastro             | Estável             |
 | Manifestação de destinatário  | Estável             |
 
+## DC-e — Declaração de Conteúdo eletrônica
+
+Modelo fiscal 99, instituído pelo Ajuste SINIEF 05/2021. Substitui a declaração de conteúdo em papel no transporte de bens e mercadorias quando não é exigido documento fiscal.
+
+A DC-e segue um modelo de **autorizador único nacional**, hospedado pela SEFAZ-PR (`dce.fazenda.pr.gov.br`), atendendo todas as UFs participantes. Web Services suportados (versão 1.00):
+
+| Serviço                       | Status              |
+| ----------------------------- | :-----------------: |
+| Status do serviço             | Implementado        |
+| Autorização (envio síncrono)  | Implementado        |
+| Consulta de situação          | Implementado        |
+| Recepção de evento            | Implementado        |
+| Cancelamento (evento 110111)  | Implementado        |
+| Geração de QR-Code para DACE  | Implementado        |
+| Serviço de Distribuição (SVD) | Não suportado       |
+
+Exemplo mínimo de uso:
+
+```java
+public class MinhaDCeConfig extends DCeConfig {
+    // ... implementar getCertificadoKeyStore(), getCertificadoSenha(),
+    //     getCadeiaCertificadosKeyStore(), getCadeiaCertificadosSenha(), getCUF(),
+    //     getAmbiente() (PRODUCAO ou HOMOLOGACAO)
+}
+
+DCeConfig config = new MinhaDCeConfig();
+WSFacade facade = new WSFacade(config);
+
+// Consulta status do serviço
+DCeConsultaStatusServicoRetorno status = facade.consultaStatus();
+
+// Emissão de DC-e
+DCe dce = /* preencher infDCe, ide, emit, dest, det, total, transp, infDec */;
+new DCeGeraChave(dce).getChaveAcesso();
+DCeEnvioRetornoDados r = facade.envia(dce);
+
+// Cancelamento (até 24h após autorização)
+facade.cancela(chaveAcesso, numeroProtocolo, "Justificativa com no mínimo 15 caracteres");
+```
+
+Schemas oficiais (Pacote de Liberação PL_DCe_v1.00a + NT2024.001) já incluídos em `resources/schemas/PL_DCe_v1.00a_NT2024.001/`. Validação automática contra XSD em todos os envios via `DFXMLValidador`.
+
 ## Requisitos
 
 JDK >= 1.8<br>

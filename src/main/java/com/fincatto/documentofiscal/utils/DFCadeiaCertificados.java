@@ -4,6 +4,7 @@ import com.fincatto.documentofiscal.DFAmbiente;
 import com.fincatto.documentofiscal.DFLog;
 import com.fincatto.documentofiscal.cte300.classes.CTAutorizador31;
 import com.fincatto.documentofiscal.cte400.classes.CTAutorizador400;
+import com.fincatto.documentofiscal.dce.DCeEndpoint;
 import com.fincatto.documentofiscal.mdfe3.classes.MDFAutorizador3;
 import com.fincatto.documentofiscal.nfe310.classes.NFAutorizador31;
 import com.fincatto.documentofiscal.nfe400.classes.NFAutorizador400;
@@ -19,10 +20,16 @@ import java.security.cert.X509Certificate;
 
 public abstract class DFCadeiaCertificados implements DFLog {
     
+    public static final String KEYSTORE_VERSION = "v2";
+
     private static final int PORT = 443;
     private static final String PROTOCOL = "TLSv1.2";
     
     public static byte[] geraCadeiaCertificados(final DFAmbiente ambiente, final String senha) throws Exception {
+        return geraCadeiaCertificados(ambiente, senha, null);
+    }
+
+    public static byte[] geraCadeiaCertificados(final DFAmbiente ambiente, final String senha, final KeyManager[] keyManagers) throws Exception {
         final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(null, senha.toCharArray());
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -100,12 +107,25 @@ public abstract class DFCadeiaCertificados implements DFLog {
                 }
             }
     
+            // DCe (autorizador unico hospedado pela SEFAZ-PR)
+            for (final DCeEndpoint endpoint : DCeEndpoint.values()) {
+                final String urlDCe = endpoint.getUrl(ambiente);
+                if (StringUtils.isNotBlank(urlDCe)) {
+                    final String host = new URI(urlDCe).getHost();
+                    DFCadeiaCertificados.get(keyStore, host, keyManagers);
+                }
+            }
+
             keyStore.store(out, senha.toCharArray());
             return out.toByteArray();
         }
     }
     
     private static void get(final KeyStore keyStore, final String host) throws Exception {
+        get(keyStore, host, null);
+    }
+
+    private static void get(final KeyStore keyStore, final String host, final KeyManager[] keyManagers) throws Exception {
         final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init(keyStore);
         
@@ -113,7 +133,7 @@ public abstract class DFCadeiaCertificados implements DFLog {
         final SavingTrustManager savingTrustManager = new SavingTrustManager(defaultTrustManager);
         
         final SSLContext sslContext = SSLContext.getInstance(DFCadeiaCertificados.PROTOCOL);
-        sslContext.init(null, new TrustManager[]{savingTrustManager}, null);
+        sslContext.init(keyManagers, new TrustManager[]{savingTrustManager}, null);
         
         DFLog.getLogger(DFCadeiaCertificados.class).debug("Abrindo conexao para o servidor: {}:{}", host, DFCadeiaCertificados.PORT);
         try (SSLSocket sslSocket = (SSLSocket) sslContext.getSocketFactory().createSocket(host, DFCadeiaCertificados.PORT)) {

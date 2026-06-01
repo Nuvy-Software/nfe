@@ -1,0 +1,140 @@
+package com.fincatto.documentofiscal.dce.classes.endereco;
+
+import com.fincatto.documentofiscal.DFBase;
+import com.fincatto.documentofiscal.validadores.DFStringValidador;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Namespace;
+import org.simpleframework.xml.Root;
+
+/**
+ * Endereco do emitente da DC-e. Tipo TEndeEmi.
+ * cPais aceita apenas "1058" (Brasil) e xPais apenas "Brasil"/"BRASIL".
+ */
+@Root(name = "enderEmit")
+@Namespace(reference = "http://www.portalfiscal.inf.br/dce")
+public class DCeEnderecoEmitente extends DFBase {
+
+    private static final long serialVersionUID = 1L;
+
+    @Element(name = "xLgr")
+    private String logradouro;
+
+    @Element(name = "nro")
+    private String numero;
+
+    @Element(name = "xCpl", required = false)
+    private String complemento;
+
+    @Element(name = "xBairro")
+    private String bairro;
+
+    @Element(name = "cMun")
+    private String codigoMunicipio;
+
+    @Element(name = "xMun")
+    private String descricaoMunicipio;
+
+    @Element(name = "UF")
+    private String uf;
+
+    @Element(name = "CEP")
+    private String cep;
+
+    @Element(name = "cPais")
+    private String codigoPais = "1058";
+
+    @Element(name = "xPais")
+    private String descricaoPais = "Brasil";
+
+    @Element(name = "fone", required = false)
+    private String telefone;
+
+    public void setLogradouro(final String logradouro) {
+        DFStringValidador.tamanho2ate60(logradouro, "Logradouro do Emitente");
+        this.logradouro = logradouro;
+    }
+
+    public void setNumero(final String numero) {
+        DFStringValidador.tamanho60(numero, "Numero do Emitente");
+        this.numero = numero;
+    }
+
+    public void setComplemento(final String complemento) {
+        DFStringValidador.tamanho60(complemento, "Complemento do Emitente");
+        this.complemento = complemento;
+    }
+
+    public void setBairro(final String bairro) {
+        DFStringValidador.tamanho2ate60(bairro, "Bairro do Emitente");
+        this.bairro = bairro;
+    }
+
+    public void setCodigoMunicipio(final String codigoMunicipio) {
+        DFStringValidador.exatamente7N(codigoMunicipio, "Codigo do Municipio do Emitente");
+        this.codigoMunicipio = codigoMunicipio;
+    }
+
+    public void setDescricaoMunicipio(final String descricaoMunicipio) {
+        DFStringValidador.tamanho2ate60(descricaoMunicipio, "Descricao do Municipio do Emitente");
+        this.descricaoMunicipio = descricaoMunicipio;
+    }
+
+    public void setUf(final String uf) {
+        DFStringValidador.exatamente2(uf, "Sigla da UF do Emitente");
+        this.uf = uf;
+    }
+
+    public void setCep(final String cep) {
+        DFStringValidador.exatamente8N(cep, "CEP do Emitente");
+        this.cep = cep;
+    }
+
+    public void setTelefone(final String telefone) {
+        DFStringValidador.telefone(telefone);
+        this.telefone = telefone;
+    }
+
+    public String getLogradouro() {
+        return this.logradouro;
+    }
+
+    public String getNumero() {
+        return this.numero;
+    }
+
+    public String getComplemento() {
+        return this.complemento;
+    }
+
+    public String getBairro() {
+        return this.bairro;
+    }
+
+    public String getCodigoMunicipio() {
+        return this.codigoMunicipio;
+    }
+
+    public String getDescricaoMunicipio() {
+        return this.descricaoMunicipio;
+    }
+
+    public String getUf() {
+        return this.uf;
+    }
+
+    public String getCep() {
+        return this.cep;
+    }
+
+    public String getCodigoPais() {
+        return this.codigoPais;
+    }
+
+    public String getDescricaoPais() {
+        return this.descricaoPais;
+    }
+
+    public String getTelefone() {
+        return this.telefone;
+    }
+}
