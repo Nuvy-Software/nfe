@@ -199,6 +199,22 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <!-- Release automatizado para JitPack (gerencia versao + tag) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <!-- Tag = versao do pom, sem prefixo (ex.: 5.0.55-nuvy) -->
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <!-- Evita disparar a CI nos commits do release -->
+                    <scmCommentPrefix>[maven-release-plugin] [skip ci] </scmCommentPrefix>
+                    <!-- JitPack constroi a partir da tag: sem deploy/perform -->
+                    <pushChanges>true</pushChanges>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
