@@ -1,46 +1,75 @@
-Nota Fiscal Eletrônica
+NF-e (Nuvy Fork)
 ===
-Comunicador de nota fiscal e nota fiscal do consumidor da [fazenda](http://www.nfe.fazenda.gov.br/portal/principal.aspx).<br/>
-[![Java CI](https://github.com/wmixvideo/nfe/workflows/Continuous%20Integration/badge.svg)](https://github.com/wmixvideo/nfe/workflows/Java%20CI/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/wmixvideo/nfe/badge.svg?branch=master)](https://coveralls.io/github/wmixvideo/nfe?branch=master)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.wmixvideo/nfe)](https://search.maven.org/artifact/com.github.wmixvideo/nfe)
-[![Apache 2.0 License](https://img.shields.io/badge/license-apache%202.0-green.svg) ](https://github.com/wmixvideo/nfe/blob/master/LICENSE)
 
-## Atenção
-Este é um projeto colaborativo, sinta-se à vontade em usar e colaborar com o mesmo.<br/>
+Comunicador de nota fiscal eletrônica, nota fiscal do consumidor e declaração de conteúdo eletrônica (DC-e) da [fazenda](http://www.nfe.fazenda.gov.br/portal/principal.aspx).
 
-Antes de submeter um pull request, verifique a estrutura seguida pelo projeto e procure incluir no mesmo testes unitários que garantam que a funcionalidade funciona como o esperado.
+[![Apache 2.0 License](https://img.shields.io/badge/license-apache%202.0-green.svg)](https://github.com/Nuvy-Software/nfe/blob/master/LICENSE)
+[![](https://jitpack.io/v/Nuvy-Software/nfe.svg)](https://jitpack.io/#Nuvy-Software/nfe)
 
-Possuímos um grupo de WhatsApp para discussões sobre o desenvolvimento da lib: https://chat.whatsapp.com/LFmqpkoiIYc6Zy3d4TnZGU
+## Sobre este fork
+
+Este é um fork de [wmixvideo/nfe](https://github.com/wmixvideo/nfe), mantido pela [Nuvy](https://github.com/Nuvy-Software), com features adicionais e ciclo de release independente publicado via JitPack.
+
+**Diferenças em relação ao upstream:**
+
+- Suporte completo a **DC-e — Declaração de Conteúdo eletrônica** (modelo fiscal 99, Ajuste SINIEF 05/2021)
+- Publicação via JitPack a partir de tags `*-nuvy` (ex.: `5.0.55-nuvy`)
+- Pipeline simplificada (sem Maven Central / Sonatype / GPG)
+
+Todo o crédito do trabalho original vai para Diego Fincatto e contribuidores do projeto upstream. Veja [`NOTICE`](NOTICE) e [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Antes de usar
+
 Antes de começar a implementar, é altamente recomendável a leitura da documentação oficial que o governo disponibiliza em http://www.nfe.fazenda.gov.br/portal
 
 Caso não possua conhecimento técnico para criar notas fiscais, um profissional da área (como um contador) pode lhe auxiliar.
 
 ## Instalação
 
-### Diretamente pelo Maven
+### Via JitPack (Maven)
+
+Adicione o repositório JitPack e a dependência ao seu `pom.xml`:
 
 ```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
 <dependency>
-  <groupId>com.github.wmixvideo</groupId>
-  <artifactId>nfe</artifactId>
-  <version>${latest.release}</version>
+    <groupId>com.github.Nuvy-Software</groupId>
+    <artifactId>nfe</artifactId>
+    <version>5.0.55-nuvy</version>
 </dependency>
 ```
-Para acessar a lista de versões disponíveis, acesse a página de release [aqui](https://github.com/wmixvideo/nfe/releases) no github. 
 
-### Diretamente pelo código fonte (última versão em desenvolvimento)
- ```console
-    git clone https://github.com/wmixvideo/nfe
-    mvn clean install
-  ```
+### Via JitPack (Gradle)
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.Nuvy-Software:nfe:5.0.55-nuvy'
+}
+```
+
+Para a lista de versões disponíveis, consulte as [releases](https://github.com/Nuvy-Software/nfe/releases) ou a [página JitPack do projeto](https://jitpack.io/#Nuvy-Software/nfe). Também é possível referenciar branches (`master-SNAPSHOT`) ou commits específicos.
+
+### Build local (última versão em desenvolvimento)
+
+```console
+git clone https://github.com/Nuvy-Software/nfe
+cd nfe
+mvn clean install
+```
 
 ## Como usar
-Basicamente você precisará de uma implementação de **NFeConfig** (exemplificado abaixo), com informações de tipo de emissão, certificados
-digitais, e uma instância da **WsFacade**, essa classe tem a responsabilidade de fazer a ponte entre o seu sistema e a
-comunicação com os webservices da Sefaz.
+
+Basicamente você precisará de uma implementação de **NFeConfig** (exemplificado abaixo), com informações de tipo de emissão, certificados digitais, e uma instância da **WsFacade**, essa classe tem a responsabilidade de fazer a ponte entre o seu sistema e a comunicação com os webservices da Sefaz.
 
 ```java
 // Exemplo de configuracao para acesso aos serviços da Sefaz.
@@ -278,7 +307,7 @@ Schemas oficiais (Pacote de Liberação PL_DCe_v1.00a + NT2024.001) já incluíd
 
 ## Requisitos
 
-JDK >= 1.8<br>
+JDK >= 11<br>
 Maven >= 3.x
 
 ## Criação do Java KeyStore (JKS)
@@ -299,3 +328,7 @@ public static void main(String args[]){
     }
 }
 ```
+
+## Licença
+
+Distribuído sob [Apache License 2.0](LICENSE). Mantém a licença e atribuição do projeto original — veja [`NOTICE`](NOTICE).
