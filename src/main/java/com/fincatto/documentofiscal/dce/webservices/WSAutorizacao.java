@@ -56,7 +56,7 @@ class WSAutorizacao implements DFLog {
         // Envelope da variante compactada: <dceDadosMsgZip>BASE64_GZIP</dceDadosMsgZip>
         final OMFactory factory = OMAbstractFactory.getOMFactory();
         final OMNamespace ns = factory.createOMNamespace(
-                "http://www.portalfiscal.inf.br/dce/wsdl/" + DCeEndpoint.AUTORIZACAO.name(), "dce");
+                DCeEndpoint.AUTORIZACAO.getWsdlNamespace(), "dce");
         final OMElement dadosMsgZip = factory.createOMElement(DADOS_MSG_ZIP_LOCAL, ns);
         dadosMsgZip.setText(conteudoCompactado);
 
