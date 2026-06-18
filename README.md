@@ -41,7 +41,7 @@ Adicione o repositório JitPack e a dependência ao seu `pom.xml`:
 <dependency>
     <groupId>com.github.Nuvy-Software</groupId>
     <artifactId>nfe</artifactId>
-    <version>5.0.55-nuvy</version>
+    <version>5.0.56-nuvy</version>
 </dependency>
 ```
 
@@ -53,7 +53,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Nuvy-Software:nfe:5.0.55-nuvy'
+    implementation 'com.github.Nuvy-Software:nfe:5.0.56-nuvy'
 }
 ```
 
