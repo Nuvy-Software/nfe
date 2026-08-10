@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.wmixvideo</groupId>
+    <groupId>com.github.Nuvy-Software</groupId>
     <artifactId>nfe</artifactId>
-    <version>5.0.69-SNAPSHOT</version>
+    <version>5.0.68-nuvy-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>nfe</name>
-    <description>Biblioteca de comunicacao de nota fiscal eletronica brasileira</description>
-    <url>https://github.com/wmixvideo/nfe</url>
+    <description>Fork Nuvy da biblioteca de comunicacao de nota fiscal eletronica brasileira, com suporte a DC-e e releases independentes via JitPack</description>
+    <url>https://github.com/Nuvy-Software/nfe</url>
 
     <licenses>
         <license>
@@ -17,9 +17,9 @@
     </licenses>
 
     <scm>
-        <url>git@github.com:wmixvideo/nfe.git</url>
-        <connection>scm:git:git@github.com:wmixvideo/nfe.git</connection>
-        <developerConnection>scm:git:git@github.com:wmixvideo/nfe.git</developerConnection>
+        <url>https://github.com/Nuvy-Software/nfe</url>
+        <connection>scm:git:https://github.com/Nuvy-Software/nfe.git</connection>
+        <developerConnection>scm:git:git@github.com:Nuvy-Software/nfe.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -28,6 +28,11 @@
             <id>fincatto</id>
             <name>Diego Fincatto</name>
             <url>https://github.com/fincatto</url>
+        </developer>
+        <developer>
+            <id>zozfabio</id>
+            <name>Nuvy Software</name>
+            <url>https://github.com/Nuvy-Software</url>
         </developer>
     </developers>
 
@@ -118,6 +123,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <build>
         <resources>
             <resource>
@@ -168,22 +180,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Cobertura de testes -->
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
-                <configuration>
-                    <repoToken>QTRbpWiuiwIHGrc0arqKxXsAtiVoLMc5h</repoToken>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+            <!-- Cobertura de testes (local) -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -202,124 +199,22 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <!-- Release automatizado para JitPack (gerencia versao + tag) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <!-- Tag = versao do pom, sem prefixo (ex.: 5.0.68-nuvy) -->
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <!-- Evita disparar a CI nos commits do release -->
+                    <scmCommentPrefix>[maven-release-plugin] [skip ci] </scmCommentPrefix>
+                    <!-- JitPack constroi a partir da tag: sem deploy/perform -->
+                    <pushChanges>true</pushChanges>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>ossrh</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://ossrh-staging-api.central.sonatype.com/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://ossrh-staging-api.central.sonatype.com/content/repositories/releases</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>github</id>
-            <distributionManagement>
-                <repository>
-                    <id>github</id>
-                    <url>https://maven.pkg.github.com/wmixvideo/nfe</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>deploy</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.7.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://ossrh-staging-api.central.sonatype.com</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <gpgArguments>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>3.3.1</version>
-                        <configuration>
-                            <scmCommentPrefix>[maven-release-plugin] [skip ci]</scmCommentPrefix>
-                            <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-                            <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <tagNameFormat>v@{project.version}</tagNameFormat>
-                            <remoteTagging>false</remoteTagging>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default</id>
-                                <goals>
-                                    <goal>perform</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.4.0</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.12.0</version>
-                        <configuration>
-                            <failOnError>false</failOnError>
-                            <doclint>none</doclint>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.5.6</version>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
