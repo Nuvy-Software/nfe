@@ -48,4 +48,19 @@ public class DCeEventoTest {
                         + "</Signature></eventoDCe>");
         Assert.assertTrue(DCeXMLValidador.validaEventoDCe(xml));
     }
+
+    /**
+     * Com o CNPJ alfanumerico (NT 2026.004) a chave de acesso referenciada no evento
+     * pode conter letras nas posicoes 7-20. O setter deve aceita-la.
+     *
+     * Nao valida contra o XSD de proposito: o pacote empacotado
+     * (PL_DCe_v1.00a_NT2024.001) ainda restringe a chave a [0-9]{44}, e o pacote
+     * adequado ao CNPJ alfanumerico ainda nao foi publicado para a DC-e.
+     */
+    @Test
+    public void deveAceitarChaveDeAcessoAlfanumericaNoEvento() {
+        final DCeInfoEvento info = new DCeInfoEvento();
+        info.setChaveAcesso("412501AB12CD34EF5602990010000000011201234564");
+        Assert.assertEquals("412501AB12CD34EF5602990010000000011201234564", info.getChaveAcesso());
+    }
 }

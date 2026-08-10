@@ -104,7 +104,7 @@ public class DCeInfoEvento extends DFBase {
     }
 
     public void setChaveAcesso(final String chaveAcesso) {
-        DFStringValidador.exatamente44N(chaveAcesso, "Chave de Acesso da DC-e no Evento");
+        DFStringValidador.exatamente44(chaveAcesso, "Chave de Acesso da DC-e no Evento");
         this.chaveAcesso = chaveAcesso;
     }
 

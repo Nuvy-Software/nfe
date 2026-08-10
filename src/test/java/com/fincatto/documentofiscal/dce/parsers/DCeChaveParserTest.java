@@ -33,4 +33,25 @@ public class DCeChaveParserTest {
     public void naoDeveAceitarTamanhoIncorreto() {
         new DCeChaveParser("123");
     }
+
+    /**
+     * A partir do CNPJ alfanumerico (NT 2026.004) a chave da DC-e pode conter letras
+     * nas posicoes 7-20. O parser trabalha por substring e deve permanecer agnostico.
+     */
+    @Test
+    public void deveDecomporChaveComCnpjAlfanumerico() {
+        // mesma chave do teste padrao, com o CNPJ substituido por AB12CD34EF5602
+        final DCeChaveParser parser = new DCeChaveParser("412501AB12CD34EF5602990010000000011201234564");
+        Assert.assertEquals(DFUnidadeFederativa.PR, parser.getNFUnidadeFederativa());
+        Assert.assertEquals("2025-01", parser.getAnoMesEmissao().toString());
+        Assert.assertEquals("AB12CD34EF5602", parser.getCnpjOuCpfEmitente());
+        Assert.assertEquals(DFModelo.DCE, parser.getModelo());
+        Assert.assertEquals("001", parser.getSerie());
+        Assert.assertEquals("000000001", parser.getNumero());
+        Assert.assertEquals(DCeTipoEmissao.NORMAL, parser.getTipoEmissao());
+        Assert.assertEquals(DCeTipoEmitente.EMISSOR_PROPRIO, parser.getTipoEmitente());
+        Assert.assertEquals("0", parser.getNumeroSiteAutorizador());
+        Assert.assertEquals("123456", parser.getCodigoNumerico());
+        Assert.assertEquals("4", parser.getDigitoVerificador());
+    }
 }

@@ -5,6 +5,24 @@ Este changelog registra apenas as mudanças do fork Nuvy em relação ao
 upstream [`wmixvideo/nfe`](https://github.com/wmixvideo/nfe). Para
 histórico do upstream consulte as releases do projeto original.
 
+## [5.0.69-nuvy] - 2026-08-10
+
+### Corrigido
+- CNPJ alfanumérico (NT 2026.004) na DC-e, alinhando o tratamento ao que já
+  havia sido aplicado ao MDF-e. O CNPJ ocupa as posições 7-20 da chave de
+  acesso e dois pontos o rejeitavam:
+  - cálculo do dígito verificador da chave passou a usar conversão por valor
+    de char (ASCII - 48), que cobre dígitos e letras A-Z, no lugar de
+    `Integer.parseInt`, que lançava `NumberFormatException`;
+  - chave de acesso do identificador, da consulta de situação e do evento
+    passou a ser validada por comprimento apenas, no lugar da variante que
+    também exigia caracteres numéricos.
+
+  Os pacotes de schema empacotados (`PL_DCe_v1.00a_NT2024.001`) ainda
+  restringem CNPJ e chave a caracteres numéricos, portanto a validação
+  contra XSD segue rejeitando CNPJ alfanumérico até que a SEFAZ publique o
+  pacote adequado para a DC-e.
+
 ## [5.0.68-nuvy] - 2026-08-10
 
 ### Adicionado

@@ -36,7 +36,7 @@ public class DCeConsultaSituacao extends DFBase {
     }
 
     public void setChaveAcesso(final String chaveAcesso) {
-        DFStringValidador.exatamente44N(chaveAcesso, "Chave de Acesso da DC-e");
+        DFStringValidador.exatamente44(chaveAcesso, "Chave de Acesso da DC-e");
         this.chaveAcesso = chaveAcesso;
     }
 

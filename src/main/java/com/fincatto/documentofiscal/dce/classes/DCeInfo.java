@@ -81,7 +81,7 @@ public class DCeInfo extends DFBase {
     private DCeDeclaracaoEmitente declaracao;
 
     public void setIdentificador(final String identificador) {
-        DFStringValidador.exatamente44N(identificador, "Identificador da DC-e");
+        DFStringValidador.exatamente44(identificador, "Identificador da DC-e");
         this.identificador = DCeInfo.IDENT + identificador;
     }
 

@@ -23,4 +23,23 @@ public class DCeConsultaSituacaoTest {
 
         Assert.assertTrue(DCeXMLValidador.validaConsultaSituacaoDCe(xml));
     }
+
+    /**
+     * Com o CNPJ alfanumerico (NT 2026.004) a chave consultada pode conter letras
+     * nas posicoes 7-20. O setter deve aceita-la.
+     *
+     * Nao valida contra o XSD de proposito: o pacote empacotado
+     * (PL_DCe_v1.00a_NT2024.001) ainda restringe a chave a [0-9]{44}, e o pacote
+     * adequado ao CNPJ alfanumerico ainda nao foi publicado para a DC-e.
+     */
+    @Test
+    public void deveAceitarChaveDeAcessoAlfanumericaNaConsulta() {
+        final DCeConsultaSituacao consulta = new DCeConsultaSituacao();
+        consulta.setAmbiente(DFAmbiente.HOMOLOGACAO);
+        consulta.setChaveAcesso("412501AB12CD34EF5602990010000000011201234564");
+
+        Assert.assertEquals("412501AB12CD34EF5602990010000000011201234564", consulta.getChaveAcesso());
+        Assert.assertTrue(consulta.toString()
+                .contains("<chDCe>412501AB12CD34EF5602990010000000011201234564</chDCe>"));
+    }
 }

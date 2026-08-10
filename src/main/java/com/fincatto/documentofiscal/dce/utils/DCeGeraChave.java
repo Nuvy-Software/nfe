@@ -14,7 +14,9 @@ import java.time.format.DateTimeFormatter;
  * cUF(2) + AAMM(4) + CNPJ/CPF(14) + mod=99(2) + serie(3) + nDC(9)
  *   + tpEmis(1) + tpEmit(1) + nSiteAutoriz(1) + cDC(6) + cDV(1) = 44.
  *
- * DV: modulo 11 com pesos ciclicos 2..9 (direita para esquerda).
+ * DV: modulo 11 com pesos ciclicos 2..9 (direita para esquerda), usando a conversao
+ * por valor de char (ASCII - 48), que funciona tanto para digitos quanto para letras
+ * A-Z e portanto suporta o CNPJ alfanumerico (NT 2026.004).
  */
 public class DCeGeraChave {
 
@@ -60,7 +62,7 @@ public class DCeGeraChave {
             if (indice >= pesos.length) {
                 indice = 0;
             }
-            final int valor = Integer.parseInt(String.valueOf(valores[i - 1]));
+            final int valor = valores[i - 1] - '0';
             soma += valor * pesos[indice++];
         }
         final int dv = 11 - (soma % 11);
