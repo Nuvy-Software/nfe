@@ -19,10 +19,16 @@ import java.security.cert.X509Certificate;
 
 public abstract class DFCadeiaCertificados implements DFLog {
     
+    public static final String KEYSTORE_VERSION = "v2";
+
     private static final int PORT = 443;
     private static final String PROTOCOL = "TLSv1.2";
     
     public static byte[] geraCadeiaCertificados(final DFAmbiente ambiente, final String senha) throws Exception {
+        return geraCadeiaCertificados(ambiente, senha, null);
+    }
+
+    public static byte[] geraCadeiaCertificados(final DFAmbiente ambiente, final String senha, final KeyManager[] keyManagers) throws Exception {
         final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(null, senha.toCharArray());
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -106,6 +112,10 @@ public abstract class DFCadeiaCertificados implements DFLog {
     }
     
     private static void get(final KeyStore keyStore, final String host) throws Exception {
+        get(keyStore, host, null);
+    }
+
+    private static void get(final KeyStore keyStore, final String host, final KeyManager[] keyManagers) throws Exception {
         final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init(keyStore);
         
@@ -113,7 +123,7 @@ public abstract class DFCadeiaCertificados implements DFLog {
         final SavingTrustManager savingTrustManager = new SavingTrustManager(defaultTrustManager);
         
         final SSLContext sslContext = SSLContext.getInstance(DFCadeiaCertificados.PROTOCOL);
-        sslContext.init(null, new TrustManager[]{savingTrustManager}, null);
+        sslContext.init(keyManagers, new TrustManager[]{savingTrustManager}, null);
         
         DFLog.getLogger(DFCadeiaCertificados.class).debug("Abrindo conexao para o servidor: {}:{}", host, DFCadeiaCertificados.PORT);
         try (SSLSocket sslSocket = (SSLSocket) sslContext.getSocketFactory().createSocket(host, DFCadeiaCertificados.PORT)) {
