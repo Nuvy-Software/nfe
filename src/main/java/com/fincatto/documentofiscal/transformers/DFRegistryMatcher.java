@@ -409,5 +409,10 @@ public class DFRegistryMatcher extends RegistryMatcher {
 
     // Eventos
     super.bind(NFEventoTipoAutor.class, new NFEventoTipoAutorTransformer());
+
+    // DC-e
+    super.bind(com.fincatto.documentofiscal.dce.classes.tipos.DCeTipoEmissao.class, new com.fincatto.documentofiscal.dce.transformers.DCeTipoEmissaoTransformer());
+    super.bind(com.fincatto.documentofiscal.dce.classes.tipos.DCeTipoEmitente.class, new com.fincatto.documentofiscal.dce.transformers.DCeTipoEmitenteTransformer());
+    super.bind(com.fincatto.documentofiscal.dce.classes.tipos.DCeModalidadeTransporte.class, new com.fincatto.documentofiscal.dce.transformers.DCeModalidadeTransporteTransformer());
   }
 }
