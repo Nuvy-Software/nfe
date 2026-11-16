@@ -140,7 +140,12 @@ public abstract class DFCadeiaCertificados implements DFLog {
             sslSocket.setSoTimeout(10000);
             sslSocket.startHandshake();
         } catch (final Exception e) {
-            DFLog.getLogger(DFCadeiaCertificados.class).error(String.format("[%s] %s", host, e.toString()));
+            // a cadeia e capturada antes da validacao: handshake recusado depois disso (CA ainda fora do keystore, servidor que exige certificado cliente) nao e falha
+            if (savingTrustManager.chain == null) {
+                DFLog.getLogger(DFCadeiaCertificados.class).error(String.format("[%s] %s", host, e.toString()));
+            } else {
+                DFLog.getLogger(DFCadeiaCertificados.class).debug("[{}] cadeia capturada; handshake encerrado com {}", host, e.toString());
+            }
         }
         
         // se conseguir obter a cadeia de certificados, adiciona no keystore

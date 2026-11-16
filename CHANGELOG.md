@@ -5,6 +5,17 @@ Este changelog registra apenas as mudanças do fork Nuvy em relação ao
 upstream [`wmixvideo/nfe`](https://github.com/wmixvideo/nfe). Para
 histórico do upstream consulte as releases do projeto original.
 
+## [5.0.70-nuvy] - 2026-11-16
+
+### Corrigido
+- `DFCadeiaCertificados` registrava ERROR em todo host cujo handshake falhava,
+  mesmo quando a cadeia já tinha sido capturada (ela é guardada antes da
+  validação). Eram ~34 ERROR falsos por dia na regeneração da cadeia: keystore
+  ainda vazio no primeiro host, CA ainda não vista (PKIX) e servidores que
+  exigem certificado cliente (`bad_certificate`, `handshake_failure`,
+  `certificate_unknown`). Agora só é ERROR quando nenhuma cadeia foi obtida; o
+  resto vai para DEBUG.
+
 ## [5.0.69-nuvy] - 2026-08-10
 
 ### Corrigido
