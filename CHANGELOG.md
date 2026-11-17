@@ -5,6 +5,17 @@ Este changelog registra apenas as mudanças do fork Nuvy em relação ao
 upstream [`wmixvideo/nfe`](https://github.com/wmixvideo/nfe). Para
 histórico do upstream consulte as releases do projeto original.
 
+## [5.0.71-nuvy] - 2026-11-17
+
+### Corrigido
+- `SCAN` (SVC-AN) em `NFAutorizador400` e `NFAutorizador31` ainda apontava para
+  `www.svc.fazenda.gov.br`/`hom.svc.fazenda.gov.br`, desligados na unificação
+  SVAN/SVC-AN (homologação em 16/07/2024, produção em 11/02/2025) e hoje sem DNS
+  (NXDOMAIN). Passa a usar `www.sefazvirtual.fazenda.gov.br`/`hom.sefazvirtual...`.
+  A emissão em contingência já ia para a `SVAN` desde o upstream #1106; o efeito
+  visível era o `DFCadeiaCertificados`, que percorre todos os autorizadores e
+  registrava 2 ERROR de `UnknownHostException` por dia na regeneração da cadeia.
+
 ## [5.0.70-nuvy] - 2026-11-16
 
 ### Corrigido

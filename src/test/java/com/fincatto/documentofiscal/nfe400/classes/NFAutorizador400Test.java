@@ -342,17 +342,17 @@ public class NFAutorizador400Test {
     @Test
     public void deveBuscarCorretamenteURLWebServiceSCAN() {
         final NFAutorizador400 autorizador = NFAutorizador400.SCAN;
-        Assert.assertEquals("https://hom.svc.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx", autorizador.getNfeAutorizacao(DFAmbiente.HOMOLOGACAO));
-        Assert.assertEquals("https://hom.svc.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx", autorizador.getNfeConsultaProtocolo(DFAmbiente.HOMOLOGACAO));
-        Assert.assertEquals("https://hom.svc.fazenda.gov.br/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx", autorizador.getNfeRetAutorizacao(DFAmbiente.HOMOLOGACAO));
-        Assert.assertEquals("https://hom.svc.fazenda.gov.br/NFeStatusServico4/NFeStatusServico4.asmx", autorizador.getNfeStatusServico(DFAmbiente.HOMOLOGACAO));
-        Assert.assertEquals("https://hom.svc.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx", autorizador.getRecepcaoEvento(DFAmbiente.HOMOLOGACAO));
+        Assert.assertEquals("https://hom.sefazvirtual.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx", autorizador.getNfeAutorizacao(DFAmbiente.HOMOLOGACAO));
+        Assert.assertEquals("https://hom.sefazvirtual.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx", autorizador.getNfeConsultaProtocolo(DFAmbiente.HOMOLOGACAO));
+        Assert.assertEquals("https://hom.sefazvirtual.fazenda.gov.br/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx", autorizador.getNfeRetAutorizacao(DFAmbiente.HOMOLOGACAO));
+        Assert.assertEquals("https://hom.sefazvirtual.fazenda.gov.br/NFeStatusServico4/NFeStatusServico4.asmx", autorizador.getNfeStatusServico(DFAmbiente.HOMOLOGACAO));
+        Assert.assertEquals("https://hom.sefazvirtual.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx", autorizador.getRecepcaoEvento(DFAmbiente.HOMOLOGACAO));
 
-        Assert.assertEquals("https://www.svc.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx", autorizador.getNfeAutorizacao(DFAmbiente.PRODUCAO));
-        Assert.assertEquals("https://www.svc.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx", autorizador.getNfeConsultaProtocolo(DFAmbiente.PRODUCAO));
-        Assert.assertEquals("https://www.svc.fazenda.gov.br/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx", autorizador.getNfeRetAutorizacao(DFAmbiente.PRODUCAO));
-        Assert.assertEquals("https://www.svc.fazenda.gov.br/NFeStatusServico4/NFeStatusServico4.asmx", autorizador.getNfeStatusServico(DFAmbiente.PRODUCAO));
-        Assert.assertEquals("https://www.svc.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx", autorizador.getRecepcaoEvento(DFAmbiente.PRODUCAO));
+        Assert.assertEquals("https://www.sefazvirtual.fazenda.gov.br/NFeAutorizacao4/NFeAutorizacao4.asmx", autorizador.getNfeAutorizacao(DFAmbiente.PRODUCAO));
+        Assert.assertEquals("https://www.sefazvirtual.fazenda.gov.br/NFeConsultaProtocolo4/NFeConsultaProtocolo4.asmx", autorizador.getNfeConsultaProtocolo(DFAmbiente.PRODUCAO));
+        Assert.assertEquals("https://www.sefazvirtual.fazenda.gov.br/NFeRetAutorizacao4/NFeRetAutorizacao4.asmx", autorizador.getNfeRetAutorizacao(DFAmbiente.PRODUCAO));
+        Assert.assertEquals("https://www.sefazvirtual.fazenda.gov.br/NFeStatusServico4/NFeStatusServico4.asmx", autorizador.getNfeStatusServico(DFAmbiente.PRODUCAO));
+        Assert.assertEquals("https://www.sefazvirtual.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx", autorizador.getRecepcaoEvento(DFAmbiente.PRODUCAO));
     }
 
     @Test(expected = UnsupportedOperationException.class)
